@@ -1,6 +1,5 @@
 from rest_framework import status, permissions
-from rest_framework.decorators import api_view
-from rest_framework.parsers import FileUploadParser,MultiPartParser
+from .permission import IsOwnerOrReadOnly
 from rest_framework.response import Response
 
 from .serializers import GenreSerializer, FilmSerializer
@@ -11,12 +10,12 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView,
 class GenreCreateAPIView(ListAPIView, CreateAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
 
 
 class GenreUpdateAPIView(RetrieveAPIView, UpdateAPIView):
     serializer_class = GenreSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     queryset = Genre.objects.all()
     lookup_field = 'id'
 
@@ -24,7 +23,7 @@ class GenreUpdateAPIView(RetrieveAPIView, UpdateAPIView):
 class FilmCreateAPIView(ListAPIView, CreateAPIView):
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
 
     def post(self, request, *args, **kwargs):
         serializer = FilmSerializer(data=request.data)
