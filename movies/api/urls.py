@@ -10,6 +10,7 @@ urlpatterns = [
     path('genres/create', GenreCreateAPIView.as_view(), name='genre-create'),
     path('genre/<int:id>/update/', GenreUpdateAPIView.as_view(), name='genre-update'),
     path('film/', FilmCreateAPIView.as_view(), name='film-create'),
+    path('film/<int:id>/update',FilmUpdateAPIView.as_view(),name='film-update'),
 
     path('user/register/', registration_view, name='register'),
     path('user/login/', views.obtain_auth_token,name='login')

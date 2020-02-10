@@ -35,3 +35,18 @@ class FilmCreateAPIView(ListAPIView, CreateAPIView):
 
 
 
+class FilmUpdateAPIView(RetrieveAPIView, UpdateAPIView):
+    serializer_class = FilmSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+    queryset = Film.objects.all()
+    lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        instance=self.get_object()
+        serializer = FilmSerializer(data=request.data,instance=instance)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
